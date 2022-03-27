@@ -1,5 +1,6 @@
 import requests
 import ast
+import time
 
 
 def get_json_result(a, b):  # input request from server
@@ -28,6 +29,21 @@ def get_hash(a):
     return hh
 
 
-number = get_blocknumber()
+# initial variables
+block_number = get_blocknumber()
+block_number_int = int(block_number, 16)
+block_number_str = str(block_number_int)
+block_hash = get_hash(block_number)
+file_name = block_number_str + '.txt'
+file_open = open(file_name, 'a')
+file_open.write(block_number_str + ' ' + block_hash + '\n')
 
-print(str(int(number,16)) + ' ' + get_hash(number))
+
+while True:
+    time.sleep(5)
+    latest_block_number = get_blocknumber()
+    if latest_block_number == block_number:
+        break
+    else
+        block_number =
+
