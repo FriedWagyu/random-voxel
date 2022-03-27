@@ -1,6 +1,7 @@
 import requests
 import ast
 import time
+import pyautogui
 
 
 def get_json_result(a, b):  # input request from server
@@ -29,6 +30,19 @@ def get_hash(a):
     return hh
 
 
+def write_voxel():
+    data = int('0xd4ee953f53e9c89033631e8327a0153b70076d7560eb107c5b39c8fdd8428c63', 16)
+
+    # pyautogui.write('fxxk Python !', interval=0.3)
+    # pyautogui.press('enter')
+
+    print(data)
+
+
+time.sleep(5)
+write_voxel()
+
+
 # initial variables
 block_number = get_blocknumber()
 block_number_int = int(block_number, 16)
@@ -37,13 +51,18 @@ block_hash = get_hash(block_number)
 file_name = block_number_str + '.txt'
 file_open = open(file_name, 'a')
 file_open.write(block_number_str + ' ' + block_hash + '\n')
-
+file_open.close()
+print(block_number_str + ' ' + block_hash + '\n')
 
 while True:
-    time.sleep(5)
-    latest_block_number = get_blocknumber()
-    if latest_block_number == block_number:
-        break
-    else
-        block_number =
+    time.sleep(10)
+    latest_block_number = int(get_blocknumber(), 16)
+    if latest_block_number > block_number_int:
+        block_number_int = block_number_int + 1
+        block_number_str = str(block_number_int)
+        block_hash = get_hash(hex(block_number_int))
+        file_open = open(file_name, 'a')
+        file_open.write(block_number_str + ' ' + block_hash + '\n')
+        file_open.close()
+        print(block_number_str + ' ' + block_hash + '\n')
 
