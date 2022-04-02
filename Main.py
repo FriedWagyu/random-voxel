@@ -1,7 +1,7 @@
 import requests
 import ast
 import time
-import pyautogui
+import random
 
 
 def get_json_result(a, b):  # input request from server
@@ -30,19 +30,19 @@ def get_hash(a):
     return hh
 
 
-def write_voxel():
-    data = int('0xd4ee953f53e9c89033631e8327a0153b70076d7560eb107c5b39c8fdd8428c63', 16)
-
-    # pyautogui.write('fxxk Python !', interval=0.3)
-    # pyautogui.press('enter')
-
-    print(data)
-
-
-time.sleep(5)
-write_voxel()
+def write_voxel(seed):
+    print(seed)
+    random.seed(seed)
+    print(random.randint(0, 10))
+    print(random.randint(0, 5))
+    print(random.randint(0, 10))
+    print(random.randint(0, 10))
+    print(random.randint(0, 10))
 
 
+write_voxel(0xd4ee953f53e9c89033631e8327a0153b70076d7560eb107c5b39c8fdd8428c63)
+
+'''
 # initial variables
 block_number = get_blocknumber()
 block_number_int = int(block_number, 16)
@@ -65,4 +65,4 @@ while True:
         file_open.write(block_number_str + ' ' + block_hash + '\n')
         file_open.close()
         print(block_number_str + ' ' + block_hash + '\n')
-
+'''

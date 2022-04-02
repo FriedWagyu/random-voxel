@@ -3,9 +3,10 @@ import numpy as np
 from pyvox.models import Vox
 from pyvox.writer import VoxWriter
 
-size=15j
+size=256j
 
 a=np.mgrid[1:255:size, 1:255:size, 1:255:size].T.astype('B')
+print(a)
 
 size=int(size.imag)
 

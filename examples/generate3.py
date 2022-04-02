@@ -7,7 +7,7 @@ from matplotlib.cm import inferno
 from pyvox.models import Vox, Color
 from pyvox.writer import VoxWriter
 
-n = 100
+n = 10
 
 res = np.zeros((n,n,n), dtype='B')
 
