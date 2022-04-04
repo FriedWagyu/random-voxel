@@ -1,8 +1,10 @@
+import random
+
 import numpy as np
 from tqdm import tqdm
 from datetime import datetime
 
-from matplotlib.cm import inferno
+from matplotlib import cm
 
 from pyvox.models import Vox, Color
 from pyvox.writer import VoxWriter
@@ -73,7 +75,12 @@ mask = res == 0
 res += np.arange(n,dtype='B')[:, np.newaxis]//8
 res[mask] = 0
 
-pal = [ Color(0,0,0,0) ] + [ Color( *[ int(255*x) for x in inferno(i/128)] ) for i in range(255) ]
+# pal = [ Color(0,0,0,0) ] + [ Color( *[ int(255*x) for x in cm.inferno(i/128)] ) for i in range(255) ]
+random.seed(0xd4ee953f53e9c89033631e8327a0153b70076d7560eb107c5b39c8fdd8428c63)
+color_list = [cm.inferno, cm.viridis, cm.plasma, cm.magma, cm.cividis]
+rand_color_list = random.choice(color_list)
+print(rand_color_list)
+pal = [Color(*[int(255 * x) for x in rand_color_list(i / 256)]) for i in range(256)]
 
 # res[res<0.1] = 0
 # res = (res*256).astype('B')
@@ -83,8 +90,9 @@ nz = len(res.nonzero()[0])
 print(nz, 'non-zero')
 if nz:
     vox = Vox.from_dense(res)
+    print(str(res))
     vox.palette = pal
 
     fn = 'test-%s.vox'%datetime.now().isoformat().replace(':', '_')
     print('wrote', fn)
-    VoxWriter(fn, vox).write()
+    # VoxWriter(fn, vox).write()

@@ -2,6 +2,10 @@ import requests
 import ast
 import time
 import random
+import numpy
+from matplotlib import cm
+from pyvox.models import Color
+from pyvox.writer import VoxWriter
 
 
 def get_json_result(a, b):  # input request from server
@@ -30,17 +34,21 @@ def get_hash(a):
     return hh
 
 
-def write_voxel(seed):
-    print(seed)
-    random.seed(seed)
-    print(random.randint(0, 10))
-    print(random.randint(0, 5))
-    print(random.randint(0, 10))
-    print(random.randint(0, 10))
-    print(random.randint(0, 10))
+def write_voxel():
+    color_list = [cm.inferno, cm.viridis, cm.plasma, cm.magma, cm.cividis]
+    rand_color_list = random.choice(color_list)
+    print(rand_color_list)
+    pal = [Color(*[int(255*x) for x in rand_color_list(i/256)]) for i in range(256)]
+
+    # vox.palette = pal
 
 
-write_voxel(0xd4ee953f53e9c89033631e8327a0153b70076d7560eb107c5b39c8fdd8428c63)
+# vox variables
+vox_size = 100
+vox_array = numpy.zeros((vox_size, vox_size, vox_size), dtype='B')
+block_hash = 0xd4ee953f53e9c89033631e8327a0153b70076d7560eb107c5b39c8fdd8428c63
+random.seed(block_hash)
+
 
 '''
 # initial variables
