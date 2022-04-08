@@ -5,6 +5,7 @@ import random
 import numpy
 from matplotlib import cm
 from pyvox.models import Color
+from pyvox.models import Vox
 from pyvox.writer import VoxWriter
 
 
@@ -34,43 +35,119 @@ def get_hash(a):
     return hh
 
 
-def write_voxel():
-    color_list = [cm.inferno, cm.viridis, cm.plasma, cm.magma, cm.cividis]
-    rand_color_list = random.choice(color_list)
-    print(rand_color_list)
+def log_txt(fn, bn, bh):
+    f = open(fn, 'a')
+    f.write(str(bn) + ' ' + bh + '\n')
+    f.close()
+    print(str(bn) + ': ' + bh)
+
+
+def write_voxel(n, h):
+    random.seed(h)
+    vox_size = 100
+    vox_array = numpy.zeros((vox_size, vox_size, vox_size), dtype='B')
+    for i in range(0, 5000):
+        rn1 = random.randrange(0, vox_size)
+        rn2 = random.randrange(0, vox_size)
+        rn3 = random.randrange(0, vox_size)
+        rn4 = random.randrange(1, 256)
+        vox_array[rn1][rn2][rn3] = rn4
+    color_list = [cm.inferno,
+                  cm.viridis,
+                  cm.plasma,
+                  cm.magma,
+                  cm.cividis,
+                  cm.Greys,
+                  cm.Purples,
+                  cm.Blues,
+                  cm.Greens,
+                  cm.Oranges,
+                  cm.Reds,
+                  cm.YlOrBr,
+                  cm.YlOrRd,
+                  cm.OrRd,
+                  cm.PuRd,
+                  cm.RdPu,
+                  cm.BuPu,
+                  cm.GnBu,
+                  cm.PuBu,
+                  cm.YlGnBu,
+                  cm.PuBuGn,
+                  cm.BuGn,
+                  cm.YlGn,
+                  cm.binary,
+                  cm.gist_yarg,
+                  cm.gist_gray,
+                  cm.gray,
+                  cm.bone,
+                  cm.pink,
+                  cm.spring,
+                  cm.summer,
+                  cm.autumn,
+                  cm.winter,
+                  cm.cool,
+                  cm.Wistia,
+                  cm.hot,
+                  cm.afmhot,
+                  cm.gist_heat,
+                  cm.copper,
+                  cm.PiYG,
+                  cm.PRGn,
+                  cm.BrBG,
+                  cm.PuOr,
+                  cm.RdGy,
+                  cm.RdBu,
+                  cm.RdYlBu,
+                  cm.RdYlGn,
+                  cm.Spectral,
+                  cm.coolwarm,
+                  cm.bwr,
+                  cm.seismic,
+                  cm.twilight,
+                  cm.twilight_shifted,
+                  cm.hsv,
+                  cm.flag,
+                  cm.prism,
+                  cm.ocean,
+                  cm.gist_earth,
+                  cm.terrain,
+                  cm.gist_stern,
+                  cm.gnuplot,
+                  cm.gnuplot2,
+                  cm.CMRmap,
+                  cm.cubehelix,
+                  cm.brg,
+                  cm.gist_rainbow,
+                  cm.rainbow,
+                  cm.jet,
+                  cm.turbo,
+                  cm.nipy_spectral,
+                  cm.gist_ncar]
+    rn = random.randrange(0, 71)
+    rand_color_list = color_list[rn]
     pal = [Color(*[int(255*x) for x in rand_color_list(i/256)]) for i in range(256)]
+    vox = Vox.from_dense(vox_array)
+    vox.palette = pal
+    fn = '.\\op\\' + str(n) + '.vox'
+    VoxWriter(fn, vox).write()
 
-    # vox.palette = pal
 
-
-# vox variables
-vox_size = 100
-vox_array = numpy.zeros((vox_size, vox_size, vox_size), dtype='B')
-block_hash = 0xd4ee953f53e9c89033631e8327a0153b70076d7560eb107c5b39c8fdd8428c63
+# hash variables
+block_number_int = int(get_blocknumber(), 16)
+block_hash = get_hash(hex(block_number_int))
 random.seed(block_hash)
-
-
-'''
-# initial variables
-block_number = get_blocknumber()
-block_number_int = int(block_number, 16)
-block_number_str = str(block_number_int)
-block_hash = get_hash(block_number)
-file_name = block_number_str + '.txt'
-file_open = open(file_name, 'a')
-file_open.write(block_number_str + ' ' + block_hash + '\n')
-file_open.close()
-print(block_number_str + ' ' + block_hash + '\n')
+log_file_name = '.\\op\\' + str(block_number_int) + ".txt"
+log_txt(log_file_name, block_number_int, block_hash)
+write_voxel(block_number_int, block_hash)
 
 while True:
     time.sleep(10)
-    latest_block_number = int(get_blocknumber(), 16)
-    if latest_block_number > block_number_int:
+    latest_block_number_int = int(get_blocknumber(), 16)
+    if latest_block_number_int > block_number_int:
         block_number_int = block_number_int + 1
-        block_number_str = str(block_number_int)
         block_hash = get_hash(hex(block_number_int))
-        file_open = open(file_name, 'a')
-        file_open.write(block_number_str + ' ' + block_hash + '\n')
-        file_open.close()
-        print(block_number_str + ' ' + block_hash + '\n')
-'''
+        log_txt(log_file_name, block_number_int, block_hash)
+        write_voxel(block_number_int, block_hash)
+
+
+# write_voxel(14545511, '0x0568aca073f67f5604919c1a709686ff9a1d60f50ed991081b87b21fb36f99e7')
