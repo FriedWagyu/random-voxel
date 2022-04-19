@@ -2,11 +2,18 @@ import requests
 import ast
 import time
 import random
-import numpy
+import numpy as np
 from matplotlib import cm
 from pyvox.models import Color
 from pyvox.models import Vox
 from pyvox.writer import VoxWriter
+
+
+def convert_positive_int(n):
+    if n < 0:
+        return -n
+    else:
+        return n
 
 
 def get_json_result(a, b):  # input request from server
@@ -45,12 +52,13 @@ def log_txt(fn, bn, bh):
 def write_voxel(n, h):
     random.seed(h)
     vox_size = 100
-    vox_array = numpy.zeros((vox_size, vox_size, vox_size), dtype='B')
+    vox_array = np.zeros((vox_size, vox_size, vox_size), dtype='B')
     for i in range(0, 5000):
         rn1 = random.randrange(0, vox_size)
         rn2 = random.randrange(0, vox_size)
         rn3 = random.randrange(0, vox_size)
         rn4 = random.randrange(1, 256)
+        n1 = 100 - convert_positive_int(rn1 - 50) + convert_positive_int(rn2 - 50)
         vox_array[rn1][rn2][rn3] = rn4
     color_list = [cm.inferno,
                   cm.viridis,
@@ -135,7 +143,6 @@ def write_voxel(n, h):
 # hash variables
 block_number_int = int(get_blocknumber(), 16)
 block_hash = get_hash(hex(block_number_int))
-random.seed(block_hash)
 log_file_name = '.\\op\\' + str(block_number_int) + ".txt"
 log_txt(log_file_name, block_number_int, block_hash)
 write_voxel(block_number_int, block_hash)
