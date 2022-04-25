@@ -53,13 +53,13 @@ def write_voxel(n, h):
     random.seed(h)
     vox_size = 100
     vox_array = np.zeros((vox_size, vox_size, vox_size), dtype='B')
-    for i in range(0, 5000):
+    for i in range(0, 1000):
         rn1 = random.randrange(0, vox_size)
         rn2 = random.randrange(0, vox_size)
         rn3 = random.randrange(0, vox_size)
         rn4 = random.randrange(1, 256)
-        n1 = 100 - convert_positive_int(rn1 - 50) + convert_positive_int(rn2 - 50)
-        vox_array[rn1][rn2][rn3] = rn4
+        n1 = 10 - convert_positive_int(rn1 - 5) - convert_positive_int(rn2 - 5)
+        vox_array[rn1][rn2][rn3:n1] = rn4
     color_list = [cm.inferno,
                   cm.viridis,
                   cm.plasma,
