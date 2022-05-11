@@ -7,6 +7,7 @@ from matplotlib import cm
 from pyvox.models import Color
 from pyvox.models import Vox
 from pyvox.writer import VoxWriter
+from pyvox.parser import VoxParser
 
 
 def convert_positive_int(n):
@@ -139,21 +140,31 @@ def write_voxel(n, h):
     VoxWriter(fn, vox).write()
 
 
-# hash variables
-block_number_int = int(get_blocknumber(), 16)
-block_hash = get_hash(hex(block_number_int))
-log_file_name = '.\\op\\' + str(block_number_int) + ".txt"
-log_txt(log_file_name, block_number_int, block_hash)
-write_voxel(block_number_int, block_hash)
+def main_loop():
+    # hash variables
+    block_number_int = int(get_blocknumber(), 16)
+    block_hash = get_hash(hex(block_number_int))
+    log_file_name = '.\\op\\' + str(block_number_int) + ".txt"
+    log_txt(log_file_name, block_number_int, block_hash)
+    write_voxel(block_number_int, block_hash)
 
-while True:
-    time.sleep(10)
-    latest_block_number_int = int(get_blocknumber(), 16)
-    if latest_block_number_int > block_number_int:
-        block_number_int = block_number_int + 1
-        block_hash = get_hash(hex(block_number_int))
-        log_txt(log_file_name, block_number_int, block_hash)
-        write_voxel(block_number_int, block_hash)
+    while True:
+        time.sleep(10)
+        latest_block_number_int = int(get_blocknumber(), 16)
+        if latest_block_number_int > block_number_int:
+            block_number_int = block_number_int + 1
+            block_hash = get_hash(hex(block_number_int))
+            log_txt(log_file_name, block_number_int, block_hash)
+            write_voxel(block_number_int, block_hash)
 
 
+def read_voxel():
+    a = VoxParser("3x3x3.vox").parse()
+    # b = a.parse
+    # c = b.to_dense
+    print(a)
+
+read_voxel()
+
+# main_loop()
 # write_voxel(14545511, '0x0568aca073f67f5604919c1a709686ff9a1d60f50ed991081b87b21fb36f99e7')
