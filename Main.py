@@ -9,6 +9,78 @@ from pyvox.models import Vox
 from pyvox.writer import VoxWriter
 from pyvox.parser import VoxParser
 
+color_list = [cm.inferno,
+              cm.viridis,
+              cm.plasma,
+              cm.magma,
+              cm.cividis,
+              cm.Greys,
+              cm.Purples,
+              cm.Blues,
+              cm.Greens,
+              cm.Oranges,
+              cm.Reds,
+              cm.YlOrBr,
+              cm.YlOrRd,
+              cm.OrRd,
+              cm.PuRd,
+              cm.RdPu,
+              cm.BuPu,
+              cm.GnBu,
+              cm.PuBu,
+              cm.YlGnBu,
+              cm.PuBuGn,
+              cm.BuGn,
+              cm.YlGn,
+              cm.binary,
+              cm.gist_yarg,
+              cm.gist_gray,
+              cm.gray,
+              cm.bone,
+              cm.pink,
+              cm.spring,
+              cm.summer,
+              cm.autumn,
+              cm.winter,
+              cm.cool,
+              cm.Wistia,
+              cm.hot,
+              cm.afmhot,
+              cm.gist_heat,
+              cm.copper,
+              cm.PiYG,
+              cm.PRGn,
+              cm.BrBG,
+              cm.PuOr,
+              cm.RdGy,
+              cm.RdBu,
+              cm.RdYlBu,
+              cm.RdYlGn,
+              cm.Spectral,
+              cm.coolwarm,
+              cm.bwr,
+              cm.seismic,
+              cm.twilight,
+              cm.twilight_shifted,
+              cm.hsv,
+              cm.flag,
+              cm.prism,
+              cm.ocean,
+              cm.gist_earth,
+              cm.terrain,
+              cm.gist_stern,
+              cm.gnuplot,
+              cm.gnuplot2,
+              cm.CMRmap,
+              cm.cubehelix,
+              cm.brg,
+              cm.gist_rainbow,
+              cm.rainbow,
+              cm.jet,
+              cm.turbo,
+              cm.nipy_spectral,
+              cm.gist_ncar]
+
 
 def convert_positive_int(n):
     if n < 0:
@@ -60,77 +132,6 @@ def write_voxel(n, h):
         rn3 = random.randrange(0, vox_size)
         rn4 = random.randrange(1, 256)
         vox_array[rn1][rn2][rn3] = rn4
-    color_list = [cm.inferno,
-                  cm.viridis,
-                  cm.plasma,
-                  cm.magma,
-                  cm.cividis,
-                  cm.Greys,
-                  cm.Purples,
-                  cm.Blues,
-                  cm.Greens,
-                  cm.Oranges,
-                  cm.Reds,
-                  cm.YlOrBr,
-                  cm.YlOrRd,
-                  cm.OrRd,
-                  cm.PuRd,
-                  cm.RdPu,
-                  cm.BuPu,
-                  cm.GnBu,
-                  cm.PuBu,
-                  cm.YlGnBu,
-                  cm.PuBuGn,
-                  cm.BuGn,
-                  cm.YlGn,
-                  cm.binary,
-                  cm.gist_yarg,
-                  cm.gist_gray,
-                  cm.gray,
-                  cm.bone,
-                  cm.pink,
-                  cm.spring,
-                  cm.summer,
-                  cm.autumn,
-                  cm.winter,
-                  cm.cool,
-                  cm.Wistia,
-                  cm.hot,
-                  cm.afmhot,
-                  cm.gist_heat,
-                  cm.copper,
-                  cm.PiYG,
-                  cm.PRGn,
-                  cm.BrBG,
-                  cm.PuOr,
-                  cm.RdGy,
-                  cm.RdBu,
-                  cm.RdYlBu,
-                  cm.RdYlGn,
-                  cm.Spectral,
-                  cm.coolwarm,
-                  cm.bwr,
-                  cm.seismic,
-                  cm.twilight,
-                  cm.twilight_shifted,
-                  cm.hsv,
-                  cm.flag,
-                  cm.prism,
-                  cm.ocean,
-                  cm.gist_earth,
-                  cm.terrain,
-                  cm.gist_stern,
-                  cm.gnuplot,
-                  cm.gnuplot2,
-                  cm.CMRmap,
-                  cm.cubehelix,
-                  cm.brg,
-                  cm.gist_rainbow,
-                  cm.rainbow,
-                  cm.jet,
-                  cm.turbo,
-                  cm.nipy_spectral,
-                  cm.gist_ncar]
     rn = random.randrange(0, 71)
     rand_color_list = color_list[rn]
     pal = [Color(*[int(255*x) for x in rand_color_list(i/256)]) for i in range(256)]
@@ -158,13 +159,25 @@ def main_loop():
             write_voxel(block_number_int, block_hash)
 
 
-def read_voxel():
-    a = VoxParser("3x3x3.vox").parse()
-    # b = a.parse
-    # c = b.to_dense
-    print(a)
+def replace_voxel():
+    a = VoxParser("rose.vox").parse()
+    b = a.to_dense()
+    for x in range(0, len(b)):
+        for y in range(0, len(b[x])):
+            for z in range(0, len(b[x][y])):
+                if b[x][y][z] != 0:
+                    b[x][y][z] = random.randrange(1, 256)
+    color_number = random.randrange(0, 71)
+    color = color_list[color_number]
+    pal = [Color(*[int(255*x) for x in color(i/256)]) for i in range(256)]
+    vox = Vox.from_dense(b)
+    vox.palette = pal
+    fn = '.\\op\\' + str('test') + '.vox'
+    VoxWriter(fn, vox).write()
+    print(b)
 
-read_voxel()
+
+replace_voxel()
 
 # main_loop()
 # write_voxel(14545511, '0x0568aca073f67f5604919c1a709686ff9a1d60f50ed991081b87b21fb36f99e7')
