@@ -141,26 +141,9 @@ def write_voxel(n, h):
     VoxWriter(fn, vox).write()
 
 
-def main_loop():
-    # hash variables
-    block_number_int = int(get_blocknumber(), 16)
-    block_hash = get_hash(hex(block_number_int))
-    log_file_name = '.\\op\\' + str(block_number_int) + ".txt"
-    log_txt(log_file_name, block_number_int, block_hash)
-    write_voxel(block_number_int, block_hash)
-
-    while True:
-        time.sleep(10)
-        latest_block_number_int = int(get_blocknumber(), 16)
-        if latest_block_number_int > block_number_int:
-            block_number_int = block_number_int + 1
-            block_hash = get_hash(hex(block_number_int))
-            log_txt(log_file_name, block_number_int, block_hash)
-            write_voxel(block_number_int, block_hash)
-
-
-def replace_voxel():
-    a = VoxParser("rose.vox").parse()
+def write_voxel_rose(n, h):
+    random.seed(h)
+    a = VoxParser(".\\rose_model\\rose_202005201728.vox").parse()
     b = a.to_dense()
     for x in range(0, len(b)):
         for y in range(0, len(b[x])):
@@ -172,12 +155,28 @@ def replace_voxel():
     pal = [Color(*[int(255*x) for x in color(i/256)]) for i in range(256)]
     vox = Vox.from_dense(b)
     vox.palette = pal
-    fn = '.\\op\\' + str('test') + '.vox'
+    fn = '.\\op\\' + str(n) + '.vox'
     VoxWriter(fn, vox).write()
-    print(b)
 
 
-replace_voxel()
+def main_loop():
+    # hash variables
+    block_number_int = int(get_blocknumber(), 16)
+    block_hash = get_hash(hex(block_number_int))
+    log_file_name = '.\\op\\' + str(block_number_int) + ".txt"
+    log_txt(log_file_name, block_number_int, block_hash)
+    write_voxel_rose(block_number_int, block_hash)
+
+    while True:
+        time.sleep(10)
+        latest_block_number_int = int(get_blocknumber(), 16)
+        if latest_block_number_int > block_number_int:
+            block_number_int = block_number_int + 1
+            block_hash = get_hash(hex(block_number_int))
+            log_txt(log_file_name, block_number_int, block_hash)
+            write_voxel_rose(block_number_int, block_hash)
+
+
 
 # main_loop()
 # write_voxel(14545511, '0x0568aca073f67f5604919c1a709686ff9a1d60f50ed991081b87b21fb36f99e7')
