@@ -145,11 +145,18 @@ def write_voxel_rose(n, h):
     random.seed(h)
     a = VoxParser(".\\rose_model\\rose_202005201728.vox").parse()
     b = a.to_dense()
+    rn1 = random.randrange(1, 78)
+    rn2 = random.randrange(178, 256)
     for x in range(0, len(b)):
         for y in range(0, len(b[x])):
             for z in range(0, len(b[x][y])):
-                if b[x][y][z] != 0:
-                    b[x][y][z] = random.randrange(1, 256)
+                if b[x][y][z] == 216:
+                    b[x][y][z] = random.randrange(rn1, rn1 + 50)
+                if b[x][y][z] == 226:
+                    b[x][y][z] = random.randrange(rn2 - 50, rn2)
+                else:
+                    if random.randrange(1, 10000) == 1:
+                        b[x][y][z] = random.randrange(1, 256)
     color_number = random.randrange(0, 71)
     color = color_list[color_number]
     pal = [Color(*[int(255*x) for x in color(i/256)]) for i in range(256)]
@@ -177,6 +184,5 @@ def main_loop():
             write_voxel_rose(block_number_int, block_hash)
 
 
-
-# main_loop()
+main_loop()
 # write_voxel(14545511, '0x0568aca073f67f5604919c1a709686ff9a1d60f50ed991081b87b21fb36f99e7')
