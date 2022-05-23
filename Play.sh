@@ -1,5 +1,9 @@
 #!/bin/bash
 
+cd /home/pi/Desktop/random-voxel/
+
+git pull
+
 cd /home/pi/Desktop/random-voxel/op_mkv/
 
 while [ 1 -gt 0 ]
