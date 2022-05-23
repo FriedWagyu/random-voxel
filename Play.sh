@@ -10,5 +10,5 @@ while [ 1 -gt 0 ]
 do
 FILE=$(ls | shuf -n 1)
 echo $FILE
-omxplayer $FILE
+nvlc $FILE
 done
