@@ -2,7 +2,7 @@
 
 cd /home/pi/Desktop/random-voxel/
 
-git pull
+gh repo sync
 
 cd /home/pi/Desktop/random-voxel/op_mkv/
 
