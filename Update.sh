@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd /home/pi/Desktop/random-voxel/
+cd random-voxel
 gh repo sync
